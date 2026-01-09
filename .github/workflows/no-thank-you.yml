@@ -31,17 +31,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_WORKFLOW }}
           username: ${{ github.event.comment.user.login }}
           team: core-team
-      - name: Stop workflow if user is a member
-        if: ${{ steps.teamAffiliation.outputs.isTeamMember == 'true' }}
-        run: |
-          echo "No response for core team members."
-          exit 1
       - name: Add comment
+        if: ${{ steps.teamAffiliation.outputs.isTeamMember == 'false' }}
         run: |
           gh issue comment "$NUMBER" --body  "@${{ github.event.comment.user.login }} $BODY"
-#          echo "User Association: ${{ github.event.comment.author_association }}"
-#          echo "@$USERNAME"
-#          echo "@$USER_NAME"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
