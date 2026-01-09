@@ -20,7 +20,7 @@ jobs:
     if: ${{ !contains(github.event.issue.labels.*.name, 'contributions-welcome') && 
         !contains(github.event.issue.labels.*.name, 'good first issue') && 
         !github.event.issue.pull_request && 
-        github.event.comment.author_association != 'MEMBER' }}
+#        github.event.comment.author_association != 'MEMBER' }}
     permissions:
       issues: write
     steps:
