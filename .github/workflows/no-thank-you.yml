@@ -15,22 +15,6 @@ on:
       - created
 
 jobs:
-  check-user-team:
-    name: Team affiliation
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check user for team affiliation
-        uses: tspascoal/get-user-teams-membership@v2
-        id: teamAffiliation
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          username: ${{ github.event.comment.user.login }}
-          team: core-team
-      - name: Stop workflow if user is no member
-        if: ${{ steps.teamAffiliation.outputs.isTeamMember == 'false' }}
-        run: |
-          echo "No response for core team members."
-          exit 1
   add-comment:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.issue.labels.*.name, 'contributions-welcome') && 
@@ -40,6 +24,18 @@ jobs:
     permissions:
       issues: write
     steps:
+      - name: Check user for team affiliation
+        uses: tspascoal/get-user-teams-membership@v2
+        id: teamAffiliation
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.event.comment.user.login }}
+          team: core-team
+      - name: Stop workflow if user is a member
+        if: ${{ steps.teamAffiliation.outputs.isTeamMember == 'true' }}
+        run: |
+          echo "No response for core team members."
+          exit 1
       - name: Add comment
         run: |
           gh issue comment "$NUMBER" --body  "@${{ github.event.comment.user.login }} $BODY"
