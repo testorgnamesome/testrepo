@@ -26,13 +26,16 @@ jobs:
     steps:
       - name: Add comment
         run: |
-          gh issue comment "$NUMBER" --body "@${{ github.event.comment.user.name }} $BODY"
+          gh issue comment "$NUMBER" --body "@USERNAME $BODY"
           echo "User Association: ${{ github.event.comment.author_association }}"
-          echo "@${{ github.event.comment.user.name }}"
+          echo "@$USERNAME"
+          echo "@USER_NAME"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           NUMBER: ${{ github.event.issue.number }}
+          USER_NAME: ${{ github.event.comment.user.name }}
+          USERNAME: ${{ github.event.comment.username }}
           BODY: >
             Thank you for reaching out! Unfortunately, this issue is not suitable for open source 
             contribution and so hasn't been marked with "good first issue" or "contributions welcome".
