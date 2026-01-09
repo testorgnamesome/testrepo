@@ -20,7 +20,7 @@ jobs:
     if: ${{ !contains(github.event.issue.labels.*.name, 'contributions-welcome') && 
         !contains(github.event.issue.labels.*.name, 'good first issue') && 
         !github.event.issue.pull_request && 
-        github.event.comment.author_association != 'OWNER' }}
+        github.event.comment.author_association != 'MEMBER' }}
     permissions:
       issues: write
     steps:
@@ -28,11 +28,12 @@ jobs:
         run: |
           gh issue comment "$NUMBER" --body "$BODY"
           echo "User Association: ${{ github.event.comment.author_association }}"
+          echo "@${{ github.event.issue_comment.user.login }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           NUMBER: ${{ github.event.issue.number }}
           BODY: >
-            Thank you for reaching out! Unfortunately, this issue is not suitable for open source 
+            Hi @{ github.event.issue_comment.user.login }! Thank you for reaching out! Unfortunately, this issue is not suitable for open source 
             contribution and so hasn't been marked with "good first issue" or "contributions welcome".
             Please consult our [contribution guidelines](url), and hope to see you around!
