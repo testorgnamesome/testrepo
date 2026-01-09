@@ -26,10 +26,10 @@ jobs:
     steps:
       - name: Add comment
         run: |
-          gh issue comment "$NUMBER" --body "@USERNAME $BODY"
+          gh issue comment "$NUMBER" --body "@$USERNAME $BODY"
           echo "User Association: ${{ github.event.comment.author_association }}"
           echo "@$USERNAME"
-          echo "@USER_NAME"
+          echo "@$USER_NAME"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
