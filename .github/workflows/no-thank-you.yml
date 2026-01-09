@@ -27,9 +27,9 @@ jobs:
       - name: Add comment
         run: |
           gh issue comment "$NUMBER" --body  "@${{ github.event.comment.user.login }} $BODY"
-          echo "User Association: ${{ github.event.comment.author_association }}"
-          echo "@$USERNAME"
-          echo "@$USER_NAME"
+#          echo "User Association: ${{ github.event.comment.author_association }}"
+#          echo "@$USERNAME"
+#          echo "@$USER_NAME"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
@@ -39,4 +39,5 @@ jobs:
           BODY: >
             Thank you for reaching out! Unfortunately, this issue is not suitable for open source 
             contribution and so hasn't been marked with "good first issue" or "contributions welcome".
-            Please consult our [contribution guidelines](url), and hope to see you around!
+            Please consult our [contribution guidelines](https://github.com/openclimatefix#how-to-get-involved) for more information on how you can contribute, 
+            and hope to see you around!
