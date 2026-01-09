@@ -20,12 +20,14 @@ jobs:
     if: ${{ !contains(github.event.issue.labels.*.name, 'contributions-welcome') && 
         !contains(github.event.issue.labels.*.name, 'good first issue') && 
         !github.event.issue.pull_request && 
-        github.event.issue_comment.author_association != 'OWNER' }}
+        github.event.comment.author_association != 'OWNER' }}
     permissions:
       issues: write
     steps:
       - name: Add comment
-        run: gh issue comment "$NUMBER" --body "$BODY"
+        run: |
+          gh issue comment "$NUMBER" --body "$BODY"
+          echo "User Association: ${{ github.event.comment.author_association }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
