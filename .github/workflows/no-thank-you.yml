@@ -10,5 +10,4 @@ jobs:
     uses: testorgnamesome/.github/.github/workflows/issue-comment.yml@main
     permissions:
       issues: write
-    secrets: inherit
 
