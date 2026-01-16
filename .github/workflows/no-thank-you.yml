@@ -1,4 +1,5 @@
-name: Comment No Thank You
+name: Reply to internal issue comment
+run-name: Reply to internal issue comment by ${{ github.actor }}
 on:
   issue_comment:
     types:
@@ -6,32 +7,8 @@ on:
 
 jobs:
   maybe-add-comment:
-    runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.issue.labels.*.name, 'contributions-welcome') && 
-        !contains(github.event.issue.labels.*.name, 'good first issue') && 
-        !github.event.issue.pull_request }}
+    uses: testorgnamesome/.github/.github/workflows/issue-comment.yml@main
     permissions:
       issues: write
-    steps:
-      - name: Check user not in core team
-        uses: tspascoal/get-user-teams-membership@v2
-        id: teamAffiliation
-        with:
-          GITHUB_TOKEN: ${{ secrets.PAT_WORKFLOW }}
-          username: ${{ github.event.comment.user.login }}
-          team: core-team
-      - name: Add comment
-        if: ${{ steps.teamAffiliation.outputs.isTeamMember == 'false' }}
-        run: |
-          gh issue comment "$NUMBER" --body  "@${{ github.event.comment.user.login }} $BODY"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-          NUMBER: ${{ github.event.issue.number }}
-          USER_NAME: ${{ github.event.comment.user.name }}
-          USERNAME: ${{ github.event.comment.username }}
-          BODY: >
-            Thank you for reaching out! Unfortunately, this issue is not suitable for open source 
-            contribution and so hasn't been marked with "good first issue" or "contributions welcome".
-            Please consult our [contribution guidelines](https://github.com/openclimatefix#how-to-get-involved) for more information on how you can contribute, 
-            and hope to see you around!
+    secrets: inherit
+
